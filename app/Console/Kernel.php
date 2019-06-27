@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function(){
             $rssScript = new RssScript();
             $rssScript->RssToDB();
-        })->hourly();
+        })->everyMinute();
     }
 
     /**

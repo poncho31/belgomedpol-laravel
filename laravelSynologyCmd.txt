@@ -1,0 +1,4 @@
+[INSTALL] => SSH => racine ./web/belgomedpol/
+
+php ~/composer.phar install
+php ~/composer.phar require ****
