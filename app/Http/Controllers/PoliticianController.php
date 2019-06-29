@@ -21,8 +21,6 @@ class PoliticianController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request->isMethod('get'));
-
         if($request->input('lastname')  || $request->input('firstname')){
             $politicians = Politician::whereHas('articles', function($q) use($request){
                 if($request->lastname) {$q->where('politicians.lastname', 'like', "%".$request->lastname."%");}
@@ -33,7 +31,9 @@ class PoliticianController extends Controller
             $politicians = Politician::whereHas('articles', function($q){
             });
         }
-        $politicians = $politicians->orderBy('politicians.id', 'DESC')->paginate();
+        $politicians = $politicians->withCount('articles')
+                                   ->orderBy('articles_count', 'DESC')
+                                   ->paginate();
         $links = $politicians->links();
         return view('politician', compact('politicians', 'links'));
     }

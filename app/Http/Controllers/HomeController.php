@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ArticleRepository;
 use App\Repositories\PoliticianRepository;
 use Illuminate\Support\Facades\DB;
+use App\Scripts\php\RssScript;
 
 class HomeController extends Controller
 {
@@ -31,12 +32,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $description = "Philippe Courard, à l’époque ministre wallon de l’intérieur, avait été appelé à la rescousse";
-        $pol =  DB::table('politicians')
-                ->whereRaw("QUOTE('".addslashes($description)."') LIKE CONCAT('%',lastname, '%')")
-                ->whereRaw("QUOTE('".addslashes($description)."') LIKE CONCAT('%',firstname, '%')")
-                ->get();
-                dd($pol);
         $latestPoliticians = $this->politicianRepo->latestPoliticians();
         $latestArticles = $this->articleRepo->latestArticles();
         return view('home', compact('latestPoliticians', 'latestArticles'));

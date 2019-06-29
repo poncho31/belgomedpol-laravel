@@ -4,7 +4,7 @@ namespace App\Scripts\php;
 class Data {
 
     public static function feeds(){
-        return $feeds = 
+        return  
         [
             //LA LIBRE
         // 'http://www.lalibre.be/rss/section/actu/politique-belge.xml',
@@ -110,64 +110,78 @@ class Data {
         // 'http://www.dhnet.be/rss/section/buzz.xml',
         // 'http://www.dhnet.be/rss/section/conso.xml',
 
-        // //RTL INFO
-        // 'http://feeds.feedburner.com/rtlinfo/belgique?format=xml',
-        // 'http://feeds.feedburner.com/Rtlinfo/VotreRegion?format=xml',
-        // 'https://feeds.feedburner.com/Rtlinfos-ALaUne',
-        // 'https://feeds.feedburner.com/rtlinfo/france',
-        // 'https://feeds.feedburner.com/Rtlinfo/VotreRegion',
-        // 'https://feeds.feedburner.com/RTLInternational',
-        // 'https://feeds.feedburner.com/RTLEconomie',
-        // 'https://feeds.feedburner.com/RTLSports',
-        // 'https://feeds.feedburner.com/rtlsport/football',
-        // 'https://feeds.feedburner.com/rtlinfo/people',
-        // 'https://feeds.feedburner.com/rtlpeople/royaute',
-        // 'https://feeds.feedburner.com/rtlpeople/buzz',
-        // 'https://feeds.feedburner.com/rtlsport/footballetranger',
+        //RTL INFO
+        'http://feeds.feedburner.com/rtlinfo/belgique?format=xml',
+        'http://feeds.feedburner.com/Rtlinfo/VotreRegion?format=xml',
+        'https://feeds.feedburner.com/Rtlinfos-ALaUne',
+        'https://feeds.feedburner.com/rtlinfo/france',
+        'https://feeds.feedburner.com/Rtlinfo/VotreRegion',
+        'https://feeds.feedburner.com/RTLInternational',
+        'https://feeds.feedburner.com/RTLEconomie',
+        'https://feeds.feedburner.com/RTLSports',
+        'https://feeds.feedburner.com/rtlsport/football',
+        'https://feeds.feedburner.com/rtlinfo/people',
+        'https://feeds.feedburner.com/rtlpeople/royaute',
+        'https://feeds.feedburner.com/rtlpeople/buzz',
+        'https://feeds.feedburner.com/rtlsport/footballetranger',
 
-        // //L'ECHO
-        // 'https://www.lecho.be/rss/actualite.xml',
-        // 'https://www.lecho.be/rss/politique_europe.xml',
-        // 'https://www.lecho.be/rss/politique_belgique.xml',
-        // 'https://www.lecho.be/rss/fonds.xml',
-        // 'https://www.lecho.be/rss/mon_argent_energie.xml',
-        // 'https://www.lecho.be/rss/mon_argent_impots.xml',
-        // 'https://www.lecho.be/rss/mon_argent_budget.xml',
-        // 'https://www.lecho.be/rss/mon_argent.xml',
-        // 'https://www.lecho.be/rss/mon_argent_credit.xml',
-        // 'https://www.lecho.be/rss/mon_argent_succession.xml',
-        // 'https://www.lecho.be/rss/mon_argent_voyages.xml',
-        // 'https://www.lecho.be/rss/mon_argent_immobilier.xml',
-        // 'https://www.lecho.be/rss/mon_argent_assurances.xml',
-        // 'https://www.lecho.be/rss/mon_argent_epargner.xml',
-        // 'https://www.lecho.be/rss/sabato_art.xml',
-        // 'https://www.lecho.be/rss/sabato_mode.xml',
-        // 'https://www.lecho.be/rss/sabato_gastronomie.xml',
-        // 'https://www.lecho.be/rss/sabato_filmsettv.xml',
-        // 'https://www.lecho.be/rss/sabato_design.xml',
-        // 'https://www.lecho.be/rss/sabato_general.xml',
-        // 'https://www.lecho.be/rss/entreprises.xml',
-        // 'https://www.lecho.be/rss/entreprises_banques.xml',
-        // 'https://www.lecho.be/rss/top_stories.xml',
-        // 'https://www.lecho.be/rss/politique_belgique.xml',
-        // 'https://www.lecho.be/rss/politique_economie.xml',
-        // 'https://www.lecho.be/rss/politique_europe.xml',
-        // 'https://www.lecho.be/rss/politique_internationale.xml',
-        // // 'http://blogs.lecho.be/fairtrade/rss.xml',
-        // 'https://www.lecho.be/rss/les_cracks_en_action.xml',
-        // // 'http://blogs.lecho.be/monargent/rss.xml',
-        // // 'http://blogs.lecho.be/tzine/rss.xml',
-        // 'https://www.lecho.be/rss/debats.xml',
+        //L'ECHO
+        'https://www.lecho.be/rss/actualite.xml',
+        'https://www.lecho.be/rss/politique_europe.xml',
+        'https://www.lecho.be/rss/politique_belgique.xml',
+        'https://www.lecho.be/rss/fonds.xml',
+        'https://www.lecho.be/rss/mon_argent_energie.xml',
+        'https://www.lecho.be/rss/mon_argent_impots.xml',
+        'https://www.lecho.be/rss/mon_argent_budget.xml',
+        'https://www.lecho.be/rss/mon_argent.xml',
+        'https://www.lecho.be/rss/mon_argent_credit.xml',
+        'https://www.lecho.be/rss/mon_argent_succession.xml',
+        'https://www.lecho.be/rss/mon_argent_voyages.xml',
+        'https://www.lecho.be/rss/mon_argent_immobilier.xml',
+        'https://www.lecho.be/rss/mon_argent_assurances.xml',
+        'https://www.lecho.be/rss/mon_argent_epargner.xml',
+        'https://www.lecho.be/rss/sabato_art.xml',
+        'https://www.lecho.be/rss/sabato_mode.xml',
+        'https://www.lecho.be/rss/sabato_gastronomie.xml',
+        'https://www.lecho.be/rss/sabato_filmsettv.xml',
+        'https://www.lecho.be/rss/sabato_design.xml',
+        'https://www.lecho.be/rss/sabato_general.xml',
+        'https://www.lecho.be/rss/entreprises.xml',
+        'https://www.lecho.be/rss/entreprises_banques.xml',
+        'https://www.lecho.be/rss/top_stories.xml',
+        'https://www.lecho.be/rss/politique_belgique.xml',
+        'https://www.lecho.be/rss/politique_economie.xml',
+        'https://www.lecho.be/rss/politique_europe.xml',
+        'https://www.lecho.be/rss/politique_internationale.xml',
+        // 'http://blogs.lecho.be/fairtrade/rss.xml',
+        'https://www.lecho.be/rss/les_cracks_en_action.xml',
+        // 'http://blogs.lecho.be/monargent/rss.xml',
+        // 'http://blogs.lecho.be/tzine/rss.xml',
+        'https://www.lecho.be/rss/debats.xml',
 
-        // //LE VIF
-        // 'https://www.levif.be/actualite/feed.rss',
+        //LE VIF
+        'https://www.levif.be/actualite/feed.rss',
 
-        // //LA RTBF
+        //LA RTBF
         'http://rss.rtbf.be/article/rss/highlight_rtbfinfo_info-accueil.xml',
         'http://rss.rtbf.be/media/rss/audio/lapremiere_recent.xml',
         //SUDINFO
         'http://www.sudinfo.be/rss/2023/cible_principale_gratuit'
         ];
+    }
+
+    public static function feedsTag($media){
+        $feedsTag = [
+            "sudinfo" => [".gr-article-content"],
+            "rtbf"=> [".rtbf-paragraph"],
+            "google"=> [".w-content-details-article-body","#body-detail"], // RTL info => feedproxy.google.com
+            "dh"=>[".article-text",".articleText"],
+            "lalibre"=> [".article-text",".articleText"],
+            "lecho"=> [".ac_paragraph"],
+            "lesoir"=> [".gr-article-content"],
+            "levif"=> [".article-body"]
+        ];
+        return $feedsTag[$media];
     }
 
     function updateMediaName($em){
@@ -206,11 +220,11 @@ class Data {
             "sudinfo" => ".gr-article-content",
             "rtbf"=> ".rtbf-paragraph",
             "rtl"=> ".w-content-details-article-body",
-            "dh"=>".article-text",
+            "dhnet"=>".article-text",
             "lalibre"=> ".article-text",
             "lecho"=> ".ac_paragraph",
             "lesoir"=> ".gr-article-content",
-            "levif"=> "#article-body"
+            "levif"=> ".article-body"
         ];
     }
 }

@@ -2,9 +2,13 @@
 namespace App\Scripts\php;
 use App\Article;
 use App\Politician;
+use Masterminds\HTML5;
+use PHPHtmlParser\Dom;
 use App\Scripts\php\Data;
 use FeedIo\Factory as FeedIo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 // Script permettant de mettre à jour la BDD media (articles issus des flux RSS)
 class RssScript{
@@ -19,17 +23,15 @@ class RssScript{
             echo $content . "\n";
         }
         else{
-            $log = "";
-            $file = "./rssScript.log";
-            if(!file_exists($file)){
-                $log .= "date,data\n";
+            try {
+                Storage::disk('local')->put("rssScript.log", date("d-m-Y H:i:s").",$content\n");
+            } catch (\Throwable $th) {
+                dd($th);
             }
-            $log .= date("d-m-Y H:i:s").",$content\n";
-            file_put_contents($file, $log, FILE_APPEND);
         }
     }
 
-    public function RssToDB(){
+    public function RssToDB($count = 0){
         $this->log('####BEGIN SCRIPT####');
         try {
             $feeds = Data::feeds();
@@ -42,30 +44,42 @@ class RssScript{
                 $newRelations = 0;
                 $this->log("####Feed : $url");//LOG
                 // Va chercher les feeds
-                $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
+                try {
+                    $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
+                } catch (\Throwable $e) {
+                    $this->log("###CURL exception on $url : $e");
+                    $feeds = [];
+                }
                 // Parcours les articles d'un flux rss
-                foreach ($feeds as $feed) {
-                    // CHECK si article déjà en BDD
-                    $isInDB = Article::where('lien','=', $feed->getLink())->first();
-                    if (!$isInDB) {
-                        // INSERT article en BDD
-                        $article = new Article;
-                        $article->media = isset(parse_url($feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink();
-                        $article->titre = $feed->getTitle();
-                        $article->description = strip_tags($feed->getDescription());
-                        $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
-                        $article->lien = $feed->getLink();
-                        $article->article = $this->getCompleteArticle($article->lien);
-                        $article->save();
-                        // CHECK et INSERT politiciens liés aux articles
-                        $relation = $this->getRelationArticlePoliticians($article->description, $article->titre);
-                        foreach($relation as $pol){
-                            $this->log("###Relation : $pol->firstname $pol->lastname");
-                            $article->politicians()->attach($pol->id);
-                            $newRelations++;
+                try {
+                    foreach ($feeds as $feed) {
+                        // CHECK si article déjà en BDD
+                        $isInDB = Article::where('lien','=', $feed->getLink())->first();
+                        if (!$isInDB) {
+                            // INSERT article en BDD
+                            $article = new Article;
+                            $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
+                            $article->media = ($mediaName == "google")?"rtl":$mediaName;
+                            $this->log($article->media);
+                            $article->titre = $feed->getTitle();
+                            $article->description = strip_tags($feed->getDescription());
+                            $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
+                            $article->lien = $feed->getLink();
+                            $article->article = $this->getCompleteArticle($article->lien, $article->media);
+                            $article->save();
+    
+                            // CHECK et INSERT politiciens liés aux articles
+                            $relation = $this->getRelationArticlePoliticians((empty($article->article) || $article->article == ""?$article->description:$article->article), $article->titre);
+                            foreach($relation as $pol){
+                                $this->log("###Relation : $pol->firstname $pol->lastname");
+                                $article->politicians()->attach($pol->id);
+                                $newRelations++;
+                            }
+                            $newArticles++;
                         }
-                        $newArticles++;
                     }
+                } catch (\Throwable $e) {
+                    $this->log("###XML exception on $url : $e");
                 }
                 $durationFeed += microtime(true);
                 $this->log("####Articles : $newArticles");//LOG
@@ -82,19 +96,37 @@ class RssScript{
             
         } catch (\Throwable $e) {
             $this->log($e);
+            $this->log($count);
+            if ($count < 5) {
+                // $this->RssToDB($count ++);
+            }
         }
     }
 
-    public function getCompleteArticle($url){
-        return null;
+    public function getCompleteArticle($url, $media){
+        $dom = new Dom;
+        $dom->setOptions([
+            'removeDoubleSpace'=>true
+        ]);
+        $dom->loadFromUrl($url);
+        $tag = Data::mediasTag()[$media];
+        $content = $dom->find($tag);
+        $data = "";
+        foreach($content as $e){
+            foreach ($e->find('a') as $a){
+                $a->delete();
+            }
+            $data .= $e->innerHtml;
+        }
+        return trim(strip_tags(htmlspecialchars_decode($data, ENT_QUOTES)));
     }
-
-    public function getRelationArticlePoliticians($description, $titre){
+    
+    public function getRelationArticlePoliticians($article, $titre){
         return  DB::table('politicians')
-                ->whereRaw("QUOTE('".addslashes($description)."') LIKE CONCAT('%',lastname, '%')")
-                ->whereRaw("QUOTE('".addslashes($description)."') LIKE CONCAT('%',firstname, '%')")
-                ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',lastname, '%')")
-                ->whereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',firstname, '%')")
+                ->whereRaw("QUOTE('".addslashes($article)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($article)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
                 ->get();
     }
 
