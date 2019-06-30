@@ -18,7 +18,7 @@ class RssScript{
     {
     }
 
-    public function log($content, $echo = false){
+    public function log($content, $echo = true){
         if ($echo) {
             echo $content . "\n";
         }
