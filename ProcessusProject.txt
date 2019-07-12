@@ -1,0 +1,33 @@
+			==========Partie Mandataires Politiques==========
+
+=> Afficher des données concernant des mandataires politiques :
+	-> Remplir table Politicians (via cumuleo: +16000 disponibles et wikipedia, 5000 de récupérés)
+	-> Utilisation Flux rss (médias belges francophones) et contenu complet de l'article (analyser) afin de lier un mandataire é un article
+	-> Utilisation api wikipedia - description / image politiciens
+	-> Automatiser l'ensemble des processus en php (NAS <==> Server Web)
+
+=> Afficher des données sur les thématiques de chaque mandataires :
+	-> Remplir table Themes (https://diplomatie.belgium.be/fr/politique/themes_politiques)
+		-> Structurée en catégories / sous-catégories / ...
+	-> Création d'un script permettant d'identifier un ensemble de mots et de les lier é un théme.
+		-> Utilisation table Lexique (dictionnaire)
+		-> Machine learning ?
+	-> Lier les articles concernant des mandataires é des thématiques
+	-> Automatiser l'ensemble des processus en php
+
+=> Afficher des graphiques de popularité des mandataires / Thématique :
+	-> Nombre de fois cité dans les médias (semaine / mois / année)
+	-> Montrer l'evolution de la popularite des mandataires
+	-> Thématiques les + mises en avant
+	-> Montrer l'évolution des thémtiques mises en avant
+
+=> Afficher des données concernant les partis politiques :
+	-> Remplir table Parti (via wikipedia et ?)
+	-> Lier politiciens é un parti (?)
+	-> Thématiques liées é un parti (via mandataire) + Thématiques réelle mise en avant par le parti
+	-> Corrélation entre comment se défini le parti et comment ils fluctuent au travers des personnes le composant
+	-> Montrer l'évolution de ces corrélations dans le temps
+	-> Automatiser l'ensemble des processus
+	
+--------------------------------------------------------------
+			==========Partie Médias politiques==========

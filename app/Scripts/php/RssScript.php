@@ -18,15 +18,15 @@ class RssScript{
     {
     }
 
-    public function log($content, $echo = true){
+    public function log($content, $echo = false){
         if ($echo) {
             echo $content . "\n";
         }
         else{
             try {
-                Storage::disk('local')->put("rssScript.log", date("d-m-Y H:i:s").",$content\n");
-            } catch (\Throwable $th) {
-                dd($th);
+                Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
+            } catch (\Throwable $e) {
+                $this->log("###ERROR log insert : {$e->getMessage()}");
             }
         }
     }
@@ -47,7 +47,7 @@ class RssScript{
                 try {
                     $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
                 } catch (\Throwable $e) {
-                    $this->log("###CURL exception on $url : $e");
+                    $this->log("###CURL exception on $url : {$e->getMessage()}");
                     $feeds = [];
                 }
                 // Parcours les articles d'un flux rss
@@ -60,7 +60,6 @@ class RssScript{
                             $article = new Article;
                             $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
                             $article->media = ($mediaName == "google")?"rtl":$mediaName;
-                            $this->log($article->media);
                             $article->titre = $feed->getTitle();
                             $article->description = strip_tags($feed->getDescription());
                             $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
@@ -79,7 +78,7 @@ class RssScript{
                         }
                     }
                 } catch (\Throwable $e) {
-                    $this->log("###XML exception on $url : $e");
+                    $this->log("###XML exception on $url : {$e->getMessage()}");
                 }
                 $durationFeed += microtime(true);
                 $this->log("####Articles : $newArticles");//LOG

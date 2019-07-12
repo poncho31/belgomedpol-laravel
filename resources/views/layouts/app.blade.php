@@ -45,6 +45,22 @@
                         <!-- Authentication Links -->
                         <li><a href="{{ route('politician.index') }}">Politicians</a></li>
                         <li><a href="{{ route('article.index') }}">Article</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                Paramètres <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <label>
+                                    {{ Form::open(['route'=>'language', 'method'=> 'GET'])}}
+                                        {{Form::token()}}
+                                        Langue : 
+                                        {{Form::radio('app_language', 'fr', true)}}fr
+                                        {{Form::radio('app_language', 'en', false)}}en
+                                    {{ Form::close()}}
+                                </label>
+                            </ul>
+                        <li>
+                        </li>
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
