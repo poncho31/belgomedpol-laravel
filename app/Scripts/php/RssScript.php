@@ -84,8 +84,8 @@ class RssScript{
                                 $newRelations++;
                             }
                             $newArticles++;
+                            $this->nasTest();
                         }
-                        $this->nasTest();
                     }
                 } catch (\Throwable $e) {
                     $this->log("###XML exception on $url : {$e->getMessage()}");
