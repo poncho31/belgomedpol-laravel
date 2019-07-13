@@ -21,7 +21,7 @@ class RssScript{
     public function nasTest(){
         if (!env('APP_DEBUG')) {
             $this->nasTest++;
-            if($this->nasTest == 5){
+            if($this->nasTest > 5){
                 $this->log("####TEST");
                 exit();
             }
