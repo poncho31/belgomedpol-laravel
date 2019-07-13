@@ -18,8 +18,8 @@ class RssScript{
     {
     }
 
-    public function log($content, $echo = false){
-        if ($echo) {
+    public function log($content){
+        if (env('APP_DEBUG')) {
             echo $content . "\n";
         }
         else{
@@ -117,7 +117,7 @@ class RssScript{
             }
             $data .= $e->innerHtml;
         }
-        return trim(strip_tags(htmlspecialchars_decode($data, ENT_QUOTES)));
+        return html_entity_decode(trim(strip_tags(htmlspecialchars_decode($data, ENT_QUOTES))));
     }
     
     public function getRelationArticlePoliticians($article, $titre){
