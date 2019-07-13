@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Storage;
 // Script permettant de mettre à jour la BDD media (articles issus des flux RSS)
 class RssScript{
     protected $db;
+    protected $nasTest = 0;
 
     public function __construct()
     {
     }
-
+    public function nasTest(){
+        if (!env('APP_DEBUG')) {
+            $this->nasTest++;
+            if($this->nasTest == 5){
+                $this->log("####TEST");
+                exit();
+            }
+        }
+    }
     public function log($content){
         if (env('APP_DEBUG')) {
             echo $content . "\n";
@@ -76,6 +85,7 @@ class RssScript{
                             }
                             $newArticles++;
                         }
+                        $this->nasTest();
                     }
                 } catch (\Throwable $e) {
                     $this->log("###XML exception on $url : {$e->getMessage()}");
