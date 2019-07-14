@@ -30,5 +30,6 @@ class RssToDB implements ShouldQueue
     public function handle()
     {
         RssScript::RssToDB();
+        RssScript::repairCompleteAll();
     }
 }

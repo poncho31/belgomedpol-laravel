@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDateToPoliticiansTable extends Migration
+class AddNumberTestingToArticlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddDateToPoliticiansTable extends Migration
      */
     public function up()
     {
-        Schema::table('politicians', function (Blueprint $table) {
-            $table->timestamps();
+        Schema::table('articles', function (Blueprint $table) {
+            $table->integer("number_testing")->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddDateToPoliticiansTable extends Migration
      */
     public function down()
     {
-        Schema::table('politicians', function (Blueprint $table) {
-            $table->timestamps();
+        Schema::table('articles', function (Blueprint $table) {
+            $table->integer("number_testing");
         });
     }
 }
