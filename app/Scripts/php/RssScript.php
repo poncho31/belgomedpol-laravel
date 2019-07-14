@@ -160,6 +160,7 @@ class RssScript{
                 $politician->description = $description;
                 $politician->lienDescription = $descriptionLink;
                 $politician->image = $imageLink;
+                $politician->statut = $status;
                 $politician->number_testing++;
                 $politician->save();
             } catch (\Throwable $th) {
