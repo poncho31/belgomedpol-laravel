@@ -9,6 +9,7 @@ use FeedIo\Factory as FeedIo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\API;
 
 // Script permettant de mettre à jour la BDD media (articles issus des flux RSS)
 class RssScript{
@@ -66,25 +67,20 @@ class RssScript{
                         $isInDB = Article::where('lien','=', $feed->getLink())->first();
                         if (!$isInDB) {
                             // INSERT article en BDD
-                            $article = new Article;
-                            $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
-                            $article->media = ($mediaName == "google")?"rtl":$mediaName;
-                            $article->titre = $feed->getTitle();
-                            $article->description = strip_tags($feed->getDescription());
-                            $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
-                            $article->lien = $feed->getLink();
-                            $article->article = $this->getCompleteArticle($article->lien, $article->media);
-                            $article->save();
-    
+                            $article = $this->getArticle($feed);
                             // CHECK et INSERT politiciens liés aux articles
                             $relation = $this->getRelationArticlePoliticians((empty($article->article) || $article->article == ""?$article->description:$article->article), $article->titre);
                             foreach($relation as $pol){
-                                $this->log("###Relation : $pol->firstname $pol->lastname");
                                 $article->politicians()->attach($pol->id);
+                                // API wikipedia
+                                $this->getPoliticianInformation("$pol->firstname $pol->lastname", $pol->id);
+                                $this->log("###Relation : $pol->firstname $pol->lastname");
                                 $newRelations++;
+                                $this->nasTest();
                             }
+                            
+                            
                             $newArticles++;
-                            $this->nasTest();
                         }
                     }
                 } catch (\Throwable $e) {
@@ -112,6 +108,18 @@ class RssScript{
         }
     }
 
+    public function getArticle($feed){
+        $article = new Article;
+        $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
+        $article->media = ($mediaName == "google")?"rtl":$mediaName;
+        $article->titre = $feed->getTitle();
+        $article->description = strip_tags($feed->getDescription());
+        $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
+        $article->lien = $feed->getLink();
+        $article->article = $this->getCompleteArticle($article->lien, $article->media);
+        $article->save();
+        return $article;
+    }
     public function getCompleteArticle($url, $media){
         $dom = new Dom;
         $dom->setOptions([
@@ -137,6 +145,32 @@ class RssScript{
                 ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
                 ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
                 ->get();
+    }
+
+    public function getPoliticianInformation($politician, $id){
+        try {
+            // get information
+            $content = API::wikipedia($politician, "content");
+            $description = (isset($content[2][0]) && $content[2][0] != '')? $content[2][0] : null;
+            $descriptionLink = (isset($content[3][0]) && $content[3][0] != '' ) ? $content[3][0] : null;
+            
+            // Get image url
+            $image = API::wikipedia($politician, "image");
+            $imageLink = (!empty($image['query']['pages'][0]))? ((!empty($image['query']['pages'][0]['thumbnail']['source']))? $image['query']['pages'][0]['thumbnail']['source']: null) : null;        
+        } catch (\Throwable $th) {
+            $this->log("###ERROR API - WIKIPEDIA :{$th->getMessage()}");
+        }
+
+        // INSERT
+        try {
+            $politician= Politician::find($id);
+            $politician->description = $description;
+            $politician->lienDescription = $descriptionLink;
+            $politician->image = $imageLink;
+            $politician->save();
+        } catch (\Throwable $th) {
+            $this->log("###ERROR SQL INSERT POLITICIAN INFORMATIONS :{$th->getMessage()}");
+        }
     }
 
 }
