@@ -107,10 +107,10 @@ class RssScript{
         }
     }
 
-    public function getArticle($feed, $update = ["check"=>false, "id"=>""]){
-        $article = ($update['check'])? Article::find($update['id']) : new Article;
+    public function getArticle($feed, $update = ["update"=>false, "id"=>""]){
+        $article = ($update['update'])? Article::find($update['id']) : new Article;
 
-        if (!$update['check']) {
+        if (!$update['update']) {
             $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
             $article->media = ($mediaName == "google")?"rtl":$mediaName;
             $article->titre = $feed->getTitle();
@@ -196,7 +196,7 @@ class RssScript{
         $incompleteArticles = Article::where('article', "=", "")->where('number_testing', '<', '5')->get();
         foreach ($incompleteArticles as $article) {
             $this->log("##TRYING UPDATE ARTICLE NUMBER $article->id");
-            $this->getArticle("", ['check'=>true, "id"=>$article->id]);
+            $this->getArticle("", ['update'=>true, "id"=>$article->id]);
         }
 
     }
