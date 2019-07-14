@@ -76,6 +76,7 @@ class RssScript{
                                 $this->getPoliticianInformation("$pol->firstname $pol->lastname", $pol->id);
                                 $this->log("###Relation : $pol->firstname $pol->lastname");
                                 $newRelations++;
+
                                 $this->nasTest();
                             }
                             $newArticles++;
@@ -146,6 +147,7 @@ class RssScript{
     }
 
     public function getPoliticianInformation($politician, $id){
+        $description="";$descriptionLink="";$imageLink="";
         try {
             // get information
             $content = API::wikipedia($politician, "content");
