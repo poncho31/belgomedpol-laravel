@@ -25,11 +25,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function(){
-            $rssScript = new RssScript();
+        $rssScript = new RssScript();
+        $schedule->call(function() use($rssScript){
             $rssScript->RssToDB();
-            $rssScript->repairCompleteAll();
         })->everyMinute();
+        $schedule->call(function() use($rssScript){
+            $rssScript->repairCompleteAll();
+        })->weekly();
     }
 
     /**

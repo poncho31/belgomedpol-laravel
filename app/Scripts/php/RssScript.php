@@ -1,6 +1,7 @@
 <?php
 namespace App\Scripts\php;
 use App\Article;
+use App\Models\API;
 use App\Politician;
 use Masterminds\HTML5;
 use PHPHtmlParser\Dom;
@@ -9,7 +10,6 @@ use FeedIo\Factory as FeedIo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use App\Models\API;
 
 // Script permettant de mettre à jour la BDD media (articles issus des flux RSS)
 class RssScript{
@@ -19,28 +19,6 @@ class RssScript{
     public function __construct()
     {
     }
-    public function nasTest(){
-        if (env('APP_DEBUG')) {
-            $this->nasTest++;
-            if($this->nasTest > 5){
-                $this->log("####TEST");
-                exit();
-            }
-        }
-    }
-    public function log($content){
-        if (env('APP_DEBUG')) {
-            echo $content . "\n";
-        }
-        else{
-            try {
-                Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
-            } catch (\Throwable $e) {
-                $this->log("###ERROR log insert : {$e->getMessage()}");
-            }
-        }
-    }
-
     public function RssToDB($count = 0){
         $this->log('###BEGIN SCRIPT####');
         try {
@@ -69,16 +47,7 @@ class RssScript{
                             // INSERT article en BDD
                             $article = $this->getArticle($feed);
                             // CHECK et INSERT politiciens liés aux articles
-                            $relation = $this->getRelationArticlePoliticians((empty($article->article) || $article->article == ""?$article->description:$article->article), $article->titre);
-                            foreach($relation as $pol){
-                                $article->politicians()->attach($pol->id);
-                                // API wikipedia
-                                $this->getPoliticianInformation("$pol->firstname $pol->lastname", $pol->id);
-                                $this->log("###Relation : $pol->firstname $pol->lastname");
-                                $newRelations++;
-
-                                $this->nasTest();
-                            }
+                            $newRelations += $this->getRelationArticlePoliticians($article);
                             $newArticles++;
                         }
                     }
@@ -146,17 +115,31 @@ class RssScript{
         return html_entity_decode(trim(strip_tags(htmlspecialchars_decode($data, ENT_QUOTES))));
     }
     
-    public function getRelationArticlePoliticians($article, $titre){
-        return  DB::table('politicians')
-                ->whereRaw("QUOTE('".addslashes($article)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
-                ->orWhereRaw("QUOTE('".addslashes($article)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
-                ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
-                ->orWhereRaw("QUOTE('".addslashes($titre)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
+    public function getRelationArticlePoliticians($article){
+        // article content => description or article complete
+        $articleContent = (empty($article->article) || $article->article == ""?$article->description:$article->article);
+        $relations = DB::table('politicians')
+                ->whereRaw("QUOTE('".addslashes($articleContent)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($articleContent)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($article->titre)."') LIKE CONCAT('%',firstname,' ', lastname, '%')")
+                ->orWhereRaw("QUOTE('".addslashes($article->titre)."') LIKE CONCAT('%',lastname,' ', firstname, '%')")
                 ->get();
+        $newRelations = 0;
+        foreach($relations as $pol){
+            // Attach politician to article
+            $article->politicians()->attach($pol->id);
+            // API wikipedia
+            $this->getPoliticianInformations("$pol->firstname $pol->lastname", $pol->id);
+            $this->log("###Relation : $pol->firstname $pol->lastname");
+            $newRelations++;
+            $this->nasTest();
+        }
+        return $newRelations;
     }
 
-    public function getPoliticianInformation($politician, $id){
-        $description="";$descriptionLink="";$imageLink="";
+    public function getPoliticianInformations($politician, $id){
+        $description="";$descriptionLink="";$imageLink="";$status="";
+        // Check if already test more than 5 times
         if(Politician::where('id',$id)->where('number_testing','<', 5)->first()){
             try {
                 // get information
@@ -166,7 +149,8 @@ class RssScript{
                 
                 // Get image url
                 $image = API::wikipedia($politician, "image");
-                $imageLink = (!empty($image['query']['pages'][0]))? ((!empty($image['query']['pages'][0]['thumbnail']['source']))? $image['query']['pages'][0]['thumbnail']['source']: null) : null;        
+                $imageLink = (!empty($image['query']['pages'][0]))? ((!empty($image['query']['pages'][0]['thumbnail']['source']))? $image['query']['pages'][0]['thumbnail']['source']: null) : null;
+                $status =  (!empty($image['query']['pages'][0])) ? (!empty($image['query']['pages'][0]['terms']['description'][0])?($image['query']['pages'][0]['terms']['description'][0]) : null) : null;     
             } catch (\Throwable $th) {
                 $this->log("####ERROR API - WIKIPEDIA :{$th->getMessage()}");
             }
@@ -192,13 +176,45 @@ class RssScript{
 
     public function repairCompleteAll(){
         // ARTICLES GET COMPLETE
-        $this->log("##INCOMPLETE ARTICLES");
+        
         $incompleteArticles = Article::where('article', "=", "")->where('number_testing', '<', '5')->get();
-        foreach ($incompleteArticles as $article) {
-            $this->log("##TRYING UPDATE ARTICLE NUMBER $article->id");
-            $this->getArticle("", ['update'=>true, "id"=>$article->id]);
+        $this->log("##INCOMPLETE ARTICLES : ".count($incompleteArticles));
+        foreach ($incompleteArticles as $incArticle) {
+            $this->log("##TRYING UPDATE ARTICLE NUMBER $incArticle->id");
+            $article = $this->getArticle("", ['update'=>true, "id"=>$incArticle->id]);
+            // POLITICIAN GET ARTICLE RELATION
+            $this->getRelationArticlePoliticians($article);
         }
+        // REMOVE DUPLICATE ROWS
+        DB::select("DELETE t1 FROM article_politician t1
+                        INNER JOIN article_politician t2 
+                    WHERE 
+                        t1.id < t2.id AND
+                        t1.politician_id = t2.politician_id AND
+                        t1.article_id = t2.article_id
+                ");
+    }
 
+    public function nasTest(){
+        if (env('APP_DEBUG')) {
+            $this->nasTest++;
+            if($this->nasTest > 5){
+                $this->log("####TEST");
+                exit();
+            }
+        }
+    }
+    public function log($content){
+        if (env('APP_DEBUG')) {
+            echo $content . "\n";
+        }
+        else{
+            try {
+                Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
+            } catch (\Throwable $e) {
+                $this->log("###ERROR log insert : {$e->getMessage()}");
+            }
+        }
     }
 
 }
