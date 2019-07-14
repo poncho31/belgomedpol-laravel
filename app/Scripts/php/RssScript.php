@@ -78,8 +78,6 @@ class RssScript{
                                 $newRelations++;
                                 $this->nasTest();
                             }
-                            
-                            
                             $newArticles++;
                         }
                     }
@@ -116,7 +114,7 @@ class RssScript{
         $article->description = strip_tags($feed->getDescription());
         $article->date = $feed->getLastModified()->format('Y-m-d H:i:s');
         $article->lien = $feed->getLink();
-        $article->article = $this->getCompleteArticle($article->lien, $article->media);
+        $article->article = ($article->medi=="rtl")?null:$this->getCompleteArticle($article->lien, $article->media); // pour rtl la description contient tout l'article
         $article->save();
         return $article;
     }
