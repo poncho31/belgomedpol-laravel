@@ -2,3 +2,7 @@
 
 php ~/composer.phar install
 php ~/composer.phar require ****
+php72 composer.phar i
+
+[EDIT CRONJOB]
+ vi /etc/crontab
