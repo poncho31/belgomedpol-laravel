@@ -28,10 +28,10 @@ class Kernel extends ConsoleKernel
         $rssScript = new RssScript();
         
         $schedule->call(function() use($rssScript){
-            // $rssScript->RssToDB();
-            $rssScript->getPoliticianCitationsByArticle('dimitri', 'fourny');
+            $rssScript->RssToDB();
+            // $rssScript->getPoliticianCitationsByArticle('dimitri', 'fourny');
         })->everyMinute();
-        
+
 
         $schedule->call(function() use($rssScript){
             $rssScript->repairCompleteAll();
