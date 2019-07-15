@@ -170,8 +170,26 @@ class RssScript{
 
     }
 
-    public function getPoliticianCitationsByArticle($lastname, $firstname){
-        $regex = '/\..*[marghem]?.*("([^"]|"")*").*[marghem]?.*\./';
+    public function getPoliticianCitationsByArticle($firstname, $lastname){
+        // $regex = '/("([^"]|"")*")/';
+        // $regex = '/(["\'])(\\?.)*?\1/';
+        // $regex = '/"(.*?)".+['.$lastname.'].+\./';
+        // $regex = "/[A-Za-z,;'\"\\s]+[.?!]/";
+        // $regex = '/[^\.\!\?]*^["|\']\.\!\?]/';
+        $regex = '//';
+        $regex2 = '/\..*['.$lastname.'].*("([^"]|"")*").*['.$lastname.']?.*\./';
+        $content = Article::whereHas('politicians', function($q) use ($lastname, $firstname){
+            $q->where('politicians.lastname', $lastname)->where('politicians.firstname',$firstname);
+        })->get();
+        // dd($content);
+        $matches="";
+        foreach($content as $a){
+            preg_match_all($regex, $a->article, $matches);
+            dump($matches);
+            die();
+        }
+        die();
+
 
     }
 

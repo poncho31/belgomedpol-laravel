@@ -7,7 +7,7 @@
 	-> Automatiser l'ensemble des processus en php (NAS <==> Server Web)
 
 => Afficher des données sur les thématiques de chaque mandataires :
-	-> Remplir table Themes (https://diplomatie.belgium.be/fr/politique/themes_politiques)
+	-> Remplir table Themes (https://diplomatie.belgium.be/fr/politique/themes_politiques | https://www.belgium.be/fr | https://infocenter.belgium.be)
 		-> Structurée en catégories / sous-catégories / ...
 	-> Création d'un script permettant d'identifier un ensemble de mots et de les lier é un théme.
 		-> Utilisation table Lexique (dictionnaire)
