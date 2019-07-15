@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
             // $rssScript->RssToDB();
             $rssScript->getPoliticianCitationsByArticle('dimitri', 'fourny');
         })->everyMinute();
+        
 
         $schedule->call(function() use($rssScript){
             $rssScript->repairCompleteAll();
