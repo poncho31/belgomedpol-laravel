@@ -10,6 +10,15 @@
             position: relative;
             min-height: 200px;
         }
+        .politicianImg{
+            position: relative;
+            float: left;
+            width:  200px;
+            height: 200px;
+            background-position: 50% 50%;
+            background-repeat:   no-repeat;
+            background-size:     cover;
+        }
     </style>
 @endsection
 @section('content')
@@ -20,7 +29,7 @@
         </div>
         @include('layouts.searchForm', ['route' => route('politician.index')])
             @foreach($politicians as $i=>$politician)
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 article">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 article">
                 <h4>{{ $loop->index +1 + $politicians->perPage() * ($politicians->currentPage() - 1) }}. {{ $politician->firstname}} {{ $politician->lastname}}
                 <a href="{{ route('politician.show', [$politician->id]) }}">
                     <div class="text-right">
@@ -33,11 +42,9 @@
                 </h4>
                 {{-- Bouton + dernier article --}}
                 @if(count($politician->articles) > 0)
-                            <h4><strong><em>{{ $politician->articles[0]->media }} - {{ $politician->articles[0]->titre }}</em></strong></h4>
-                            <p>{{ str_limit($politician->articles[0]->description, 250) }}</p>
+                        <img class="politicianImg" src="{{ ($politician->image != null)?$politician->image:asset('images/politicians/defaultImg.png') }}" alt="" >
                         <div class="bottom">
-                            <span class="badge badge-light" style="background:#2579A9;">{{  strftime("%A %d %B %G", strtotime($politician->articles[0]->date)) }}</span>
-                            <div class="pull-right">
+                            <div class="pull-left">
                                 <span class="label label-default">alice</span>
                                 <span class="label label-default">story</span>
                                 <span class="label label-default">blog</span>
