@@ -1,14 +1,9 @@
 @extends('layouts.app')
 @section('stylesheet')
     <style>
-        .bottom{
-            position: relative;
-            bottom: 0;
-            left: 0;
-        }
         .article{
             position: relative;
-            min-height: 200px;
+            /* min-height: 200px; */
         }
         .politicianImg{
             position: relative;
@@ -19,17 +14,44 @@
             background-repeat:   no-repeat;
             background-size:     cover;
         }
+        .category{
+            position:relative;
+            left:0;
+            bottom:0;
+            width: 100%;
+        }
+        .category span{
+            margin-left: 5px;
+            min-width:90%;
+            font-size: 0.8em;
+        }
+        .row{
+            margin: 10px;
+        }
+        hr {
+            -moz-border-bottom-colors: none;
+            -moz-border-image: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-color: #EEEEEE -moz-use-text-color #FFFFFF;
+            border-style: solid none;
+            border-width: 1px 0;
+            margin: 18px 0;
+            position: relative
+            bottom: 0;;
+        }
     </style>
 @endsection
 @section('content')
-<div class="container">
+{{-- <div class="container"> --}}
     <div class="row">
         <div class="jumbotron">
             <h3>@lang("Liste des politiciens")</h3>
         </div>
         @include('layouts.searchForm', ['route' => route('politician.index')])
             @foreach($politicians as $i=>$politician)
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 article">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 article">
                 <h4>{{ $loop->index +1 + $politicians->perPage() * ($politicians->currentPage() - 1) }}. {{ $politician->firstname}} {{ $politician->lastname}}
                 <a href="{{ route('politician.show', [$politician->id]) }}">
                     <div class="text-right">
@@ -42,28 +64,28 @@
                 </h4>
                 {{-- Bouton + dernier article --}}
                 @if(count($politician->articles) > 0)
-                        <img class="politicianImg" src="{{ ($politician->image != null)?$politician->image:asset('images/politicians/defaultImg.png') }}" alt="" >
-                        <div class="bottom">
-                            <div class="pull-left">
-                                <span class="label label-default">alice</span>
-                                <span class="label label-default">story</span>
-                                <span class="label label-default">blog</span>
-                                <span class="label label-default">personal</span>
-                                <span class="label label-default">Warning</span>
-                                <span class="label label-default">Danger</span>
-                            </div>   
-                            <hr>
-                        </div>
+                        <img class="politicianImg" src="{{ ($politician->image != null)?$politician->image: asset('images/politicians/defaultImg.png') }}" alt="" >
+                        <div class="category">
+                            <span class="label label-primary">Famille</span>
+                            <span class="label label-default">Justice</span>
+                            <span class="label label-primary">Mobilité</span>
+                            <span class="label label-default">Santé</span>
+                            <span class="label label-primary">Environnement</span>
+                            <span class="label label-default">Logement</span>
+                            <span class="label label-primary">Economie</span>
+                            <span class="label label-default">Formation</span>
+                            <span class="label label-primary">Emploi</span>
+                        </div>   
                 @endif
-                
             </div>
+            {{-- <hr> --}}
             @endforeach
         </div>                                    
     </div>
     <div class="text-center">
             {{ $links }}
     </div>
-</div>
+{{-- </div> --}}
 @endsection
 @section('script')
     {{-- <script>
