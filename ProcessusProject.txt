@@ -9,7 +9,7 @@
 => Afficher des données sur les thématiques de chaque mandataires :
 	-> Remplir table Themes (https://diplomatie.belgium.be/fr/politique/themes_politiques | https://www.belgium.be/fr | https://infocenter.belgium.be)
 		-> Structurée en catégories / sous-catégories / ...
-	-> Création d'un script permettant d'identifier un ensemble de mots et de les lier é un théme.
+	-> Création d'un script permettant d'identifier un ensemble de mots et de les lier à un théme.
 		-> Utilisation table Lexique (dictionnaire)
 		-> Machine learning ?
 	-> Lier les articles concernant des mandataires é des thématiques

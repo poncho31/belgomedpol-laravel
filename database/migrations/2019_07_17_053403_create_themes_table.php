@@ -17,8 +17,8 @@ class CreateThemesTable extends Migration
             $table->increments('id');
             $table->string('theme');
             $table->string('category');
-            $table->string('subcategory');
-            $table->text('explanation');
+            $table->string('subcategory')->nullable();
+            $table->text('explanation')->nullable();
             $table->timestamps();
         });
     }

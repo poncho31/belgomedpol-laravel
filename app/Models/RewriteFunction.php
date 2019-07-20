@@ -29,4 +29,8 @@ class Rewritefunction
         }
         return $response;
     }
+
+    public static function if($if, $else = null){
+        return isset($if)?$if:$else;
+    }
 }

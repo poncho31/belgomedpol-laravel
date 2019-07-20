@@ -48,6 +48,10 @@
     <div class="row">
         <div class="jumbotron">
             <h3>@lang("Liste des politiciens")</h3>
+            <div class="text-right">
+                <h4>Nombre total de politiciens           : {{$countPoliticanTot}}</h4>
+                <h4>Nombre de politiciens avec articles   : {{$countPoliticanArt}}</h4>
+            </div>
         </div>
         @include('layouts.searchForm', ['route' => route('politician.index')])
             @foreach($politicians as $i=>$politician)
@@ -64,7 +68,7 @@
                 </h4>
                 {{-- Bouton + dernier article --}}
                 @if(count($politician->articles) > 0)
-                        <img class="politicianImg" src="{{ ($politician->image != null)?$politician->image: asset('images/politicians/defaultImg.png') }}" alt="" >
+                        <img class="politicianImg" src="{{ {{--($politician->image != null)?$politician->image:--}} asset('images/politicians/defaultImg.png') }}" alt="" >
                         <div class="category">
                             <span class="label label-primary">Famille</span>
                             <span class="label label-default">Justice</span>
