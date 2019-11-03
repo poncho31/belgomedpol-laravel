@@ -30,13 +30,12 @@ class Kernel extends ConsoleKernel
         $theme = new Theme();
         
         $schedule->call(function() use($theme){
-            // $theme->testConstructorRegex();
             // $theme->testRegex();
-            // $theme->insertTheme();
+            $theme->insertTheme();
         })->everyMinute();
 
         $schedule->call(function() use($rssScript){
-            $rssScript->RssToDB();
+            // $rssScript->RssToDB();
             // $rssScript->getPoliticianCitationsByArticle('dimitri', 'fourny');
         })->everyMinute();
 

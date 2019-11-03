@@ -17,4 +17,5 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('language', 'HomeController@language')->name('language');
 Route::resource('politician', 'PoliticianController');
 Route::resource('article', 'ArticleController');
+Route::get('administration', 'AdministrationController@index');
 ;
