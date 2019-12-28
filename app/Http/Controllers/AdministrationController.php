@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Scripts\php\RssScript;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 

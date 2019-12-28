@@ -68,7 +68,7 @@
                 </h4>
                 {{-- Bouton + dernier article --}}
                 @if(count($politician->articles) > 0)
-                        <img class="politicianImg" src="{{ {{--($politician->image != null)?$politician->image:--}} asset('images/politicians/defaultImg.png') }}" alt="" >
+                        <img class="politicianImg" src="{{ ($politician->image != null)?$politician->image: asset('images/politicians/defaultImg.png') }}" alt="" >
                         <div class="category">
                             <span class="label label-primary">Famille</span>
                             <span class="label label-default">Justice</span>
