@@ -29,16 +29,15 @@ class Kernel extends ConsoleKernel
         $rssScript = new RssScript();
         $theme = new Theme();
         
-        $schedule->call(function() use($theme){
-            // $theme->testRegex();
-            $theme->insertTheme();
-        })->everyMinute();
+        // $schedule->call(function() use($theme){
+        //     $theme->testRegex();
+        //     $theme->insertTheme();
+        // })->everyFiveMinutes();
 
         $schedule->call(function() use($rssScript){
-            // $rssScript->RssToDB();
+            $rssScript->RssToDB();
             // $rssScript->getPoliticianCitationsByArticle('dimitri', 'fourny');
         })->everyMinute();
-
 
         $schedule->call(function() use($rssScript){
             $rssScript->repairCompleteAll();
