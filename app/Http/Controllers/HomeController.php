@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Politician;
 use Illuminate\Http\Request;
-use App\Repositories\ArticleRepository;
-use App\Repositories\PoliticianRepository;
-use Illuminate\Support\Facades\DB;
 use App\Scripts\php\RssScript;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\ArticleRepository;
+use Illuminate\Support\Facades\Session;
+use App\Repositories\PoliticianRepository;
 
 class HomeController extends Controller
 {
@@ -36,5 +37,9 @@ class HomeController extends Controller
         $latestArticles = $this->articleRepo->latestArticles();
         return view('home', compact('latestPoliticians', 'latestArticles'));
     }
+
+    public function language(){
+		session('locale', session('locale') == 'fr' ? 'en' : 'fr');
+		return redirect()->back();
+    }
 }
-;

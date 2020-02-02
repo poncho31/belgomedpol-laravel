@@ -35,7 +35,10 @@ class PoliticianController extends Controller
                                    ->orderBy('articles_count', 'DESC')
                                    ->paginate();
         $links = $politicians->links();
-        return view('politician', compact('politicians', 'links'));
+        $countPoliticanTot = Politician::count();
+        $countPoliticanArt = Politician::has('articles')->count();
+
+        return view('politician', compact('politicians', 'links', 'countPoliticanTot', 'countPoliticanArt'));
     }
 
     /**

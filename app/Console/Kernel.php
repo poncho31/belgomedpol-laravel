@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Scripts\php\RssScript;
+use App\Theme;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,9 +27,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function(){
-            $rssScript = new RssScript();
-            $rssScript->RssToDB();
-        })->everyMinute();
+            (new RssScript)->RssToDB();
+        })->hourly();
+
+        // $schedule->call(function() use($rssScript){
+        //     $rssScript->repairCompleteAll();
+        // })->weekly();
     }
 
     /**

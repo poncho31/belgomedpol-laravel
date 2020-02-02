@@ -153,10 +153,10 @@ class Data {
         'https://www.lecho.be/rss/politique_economie.xml',
         'https://www.lecho.be/rss/politique_europe.xml',
         'https://www.lecho.be/rss/politique_internationale.xml',
-        // 'http://blogs.lecho.be/fairtrade/rss.xml',
+        'http://blogs.lecho.be/fairtrade/rss.xml',
         'https://www.lecho.be/rss/les_cracks_en_action.xml',
-        // 'http://blogs.lecho.be/monargent/rss.xml',
-        // 'http://blogs.lecho.be/tzine/rss.xml',
+        'http://blogs.lecho.be/monargent/rss.xml',
+        'http://blogs.lecho.be/tzine/rss.xml',
         'https://www.lecho.be/rss/debats.xml',
 
         //LE VIF
@@ -165,23 +165,93 @@ class Data {
         //LA RTBF
         'http://rss.rtbf.be/article/rss/highlight_rtbfinfo_info-accueil.xml',
         'http://rss.rtbf.be/media/rss/audio/lapremiere_recent.xml',
+
         //SUDINFO
-        'http://www.sudinfo.be/rss/2023/cible_principale_gratuit'
+        'http://www.sudinfo.be/rss/2023/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2023/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2089/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2144/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2092/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2093/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2146/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2147/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2094/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2900/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2921/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2095/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2096/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2145/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2090/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2091/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/1998/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2098/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2128/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2129/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2104/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2125/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2107/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2132/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2133/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2110/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2120/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2121/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2103/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2116/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2117/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2111/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2118/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2119/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2105/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2122/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2123/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2100/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2126/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2127/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2102/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2130/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2131/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2109/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2134/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2135/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2101/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2136/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2137/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2106/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2138/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2139/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2108/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2140/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2099/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2142/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2021/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2024/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2031/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2032/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2033/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2025/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2026/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2027/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2028/cible_principale_gratuit',
+        'https://www.sudinfo.be/rss2/2030/cible_principale_gratuit',
+        '',
+        '',
+
+        //NIEUWSKOP.BE
+        // "https://www.nieuwskop.be/fr/p/i/?a=rss&hours=168"
         ];
     }
 
-    public static function feedsTag($media){
-        $feedsTag = [
+    public static function mediasTag(){
+        return [
             "sudinfo" => [".gr-article-content"],
             "rtbf"=> [".rtbf-paragraph"],
-            "google"=> [".w-content-details-article-body","#body-detail"], // RTL info => feedproxy.google.com
-            "dh"=>[".article-text",".articleText"],
-            "lalibre"=> [".article-text",".articleText"],
+            "rtl"=> [".w-content-details-article-body"],
+            "dhnet"=>[".article-text", ".articleText"],
+            "lalibre"=> [".article-text", ".articleText"],
             "lecho"=> [".ac_paragraph"],
             "lesoir"=> [".gr-article-content"],
             "levif"=> [".article-body"]
         ];
-        return $feedsTag[$media];
     }
 
     function updateMediaName($em){
@@ -213,18 +283,5 @@ class Data {
         } catch (\Exception $e) {
             return "Error";
         }
-    }
-
-    public static function mediasTag(){
-        return [
-            "sudinfo" => ".gr-article-content",
-            "rtbf"=> ".rtbf-paragraph",
-            "rtl"=> ".w-content-details-article-body",
-            "dhnet"=>".article-text",
-            "lalibre"=> ".article-text",
-            "lecho"=> ".ac_paragraph",
-            "lesoir"=> ".gr-article-content",
-            "levif"=> ".article-body"
-        ];
     }
 }
