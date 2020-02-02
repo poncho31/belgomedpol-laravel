@@ -44,6 +44,8 @@ class PoliticianRepository
     }
 
     public function latestPoliticians(){
-        return DB::table('poltiicians')->orderBy('politicians.id', 'DESC')->limit(10)->offset(30);
+        return Politician::has('articles')
+        ->withCount('articles')
+        ->orderBy('articles_count', 'DESC')->limit(10)->get();
     }
 }

@@ -9,8 +9,13 @@
         <div class="panel-body">
             <div class="col-xs-6 col-md-6 col-lg-6">
                 <div class="jumbotron text-center">Politicians</div>
-                @foreach($latestPoliticians as $politician)
-                    <div class="col-xs-12 col-md-6 col-lg-6 text-center">TEST</div>
+                @foreach($latestPoliticians as $key => $politician)
+                    <div >
+                        {{ $key + 1 }} {{$politician->firstname}} {{$politician->lastname}}
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-lg-6 text-center">
+                        Nb articles : {{ count($politician->articles) }}
+                    </div>
                 @endforeach
             </div>
             <div class="col-xs-6 col-md-6 col-lg-6">
