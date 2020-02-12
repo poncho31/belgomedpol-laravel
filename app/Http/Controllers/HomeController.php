@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Politician;
-use Illuminate\Http\Request;
-use App\Scripts\php\RssScript;
-use Illuminate\Support\Facades\DB;
 use App\Repositories\ArticleRepository;
-use Illuminate\Support\Facades\Session;
 use App\Repositories\PoliticianRepository;
 
 class HomeController extends Controller
@@ -23,7 +18,6 @@ class HomeController extends Controller
     {
         // $this->middleware('auth');
         $this->politicianRepo = $politicianRepo;
-        $this->articleRepo = $articleRepo;
     }
 
     /**
@@ -33,9 +27,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $latestPoliticians = $this->politicianRepo->latestPoliticians();
-        $latestArticles = $this->articleRepo->latestArticles();
-        return view('home', compact('latestPoliticians', 'latestArticles'));
+        $weekPoliticians = $this->politicianRepo->getPolitician("week");
+        $monthPoliticians = $this->politicianRepo->getPolitician("month");
+        $yearPoliticians = $this->politicianRepo->getPolitician("year");
+        $lastyearPoliticians = $this->politicianRepo->getPolitician("lastyear");
+        // (new RssScript)->getPoliticianCitationsByArticle();
+        return view('home', compact('weekPoliticians', 'monthPoliticians','yearPoliticians','lastyearPoliticians'));
     }
 
     public function language(){

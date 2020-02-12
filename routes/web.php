@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index');
 Route::get('language', 'HomeController@language')->name('language');
 Route::resource('politician', 'PoliticianController');
 Route::resource('article', 'ArticleController');
