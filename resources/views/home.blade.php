@@ -4,25 +4,12 @@
 <div class="container">
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading">Latest news</div>
-        </div>
-        <div class="panel-body">
-            <div class="col-xs-6 col-md-6 col-lg-6">
-                <div class="jumbotron text-center">Politicians</div>
-                @foreach($latestPoliticians as $key => $politician)
-                    <div >
-                        {{ $key + 1 }} {{$politician->firstname}} {{$politician->lastname}}
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-lg-6 text-center">
-                        Nb articles : {{ count($politician->articles) }}
-                    </div>
-                @endforeach
-            </div>
-            <div class="col-xs-6 col-md-6 col-lg-6">
-                <div class="jumbotron text-center">Articles</div>
-                @foreach($latestArticles as $article)
-                <div class="col-xs-12 col-md-6 col-lg-6 text-center">TEST</div>
-                @endforeach
+            <div class="panel-heading">Dernière nouvelle de nos politiciens :</div>
+            <div class="panel-body">
+                @include('layouts.homepagePanel',['data'=>$weekPoliticians,'title'=>"Cette semaine"])
+                @include('layouts.homepagePanel',['data'=>$monthPoliticians,'title'=>"Ce mois-ci"])
+                @include('layouts.homepagePanel',['data'=>$yearPoliticians,'title'=>"Cette année - ".date('Y')])
+                @include('layouts.homepagePanel',['data'=>$lastyearPoliticians,'title'=>"L'année passée - ".date('Y', strtotime('-1 year'))])
             </div>
         </div>
     </div>

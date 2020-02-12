@@ -43,9 +43,26 @@ class PoliticianRepository
         })->get();
     }
 
-    public function latestPoliticians(){
-        return Politician::has('articles')
-        ->withCount('articles')
-        ->orderBy('articles_count', 'DESC')->limit(10)->get();
+    public function getPolitician($date){
+        if($date == "week"){
+            $date = "date(a.date) >= date(NOW() - INTERVAL 7 DAY)";
+        }
+        elseif($date == "month"){
+            $date = "date(a.date) >= date(NOW() - INTERVAL 1 month)";
+        }
+        elseif($date == "year"){
+            $date = "YEAR(a.date) = ". date('Y');
+        }
+        elseif($date == "lastyear"){
+            $date = "YEAR(a.date) = ". (date('Y') - 1);
+        }
+        $sql = DB::select("SELECT count(a.id) cnt, p.*  FROM politicians p
+                            INNER JOIN article_politician ap ON ap.politician_id = p.id
+                            INNER JOIN articles a ON ap.article_id = a.id
+                           WHERE $date
+                           GROUP BY p.id DESC
+                           ORDER BY cnt DESC LIMIT 5", []);
+
+        return $sql;
     }
 }
