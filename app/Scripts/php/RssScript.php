@@ -20,18 +20,16 @@ class RssScript{
     public function __construct()
     {
     }
-    public function RssToDB($count = 0){
-        $this->log('###BEGIN SCRIPT####');
+    public function RssToDB(){
         try {
-            $allFeeds = Data::feeds();
             $totalDuration = -microtime(true);
             $newArticlesTotal = 0;
             $relationTotal = 0;
-            foreach ($allFeeds as $url) {
+            // Parcours le tableau des flux RSS
+            foreach (Data::feeds() as $url) {
                 $durationFeed = -microtime(true);
                 $newArticles = 0;
                 $newRelations = 0;
-                $this->log("###Feed : $url");//LOG
                 // Va chercher les feeds
                 try {
                     $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
@@ -56,24 +54,15 @@ class RssScript{
                     $this->log("XML exception on $url : {$e->getMessage()}", 1);
                 }
                 $durationFeed += microtime(true);
-                $this->log("###Articles : $newArticles");//LOG
-                $this->log("###Relations : $newRelations");//LOG
-                $this->log("###Duration : $durationFeed");//LOG
                 $relationTotal+=$newRelations;
                 $newArticlesTotal+=$newArticles;
             }
 
             $totalDuration += microtime(true);
-            $this->log("##Total Articles : $newArticlesTotal");//LOG
-            $this->log("##Total Relations : $relationTotal");//LOG
-            $this->log("##Total Duration : $totalDuration");//LOG
+            $this->log("DONE - ##Total Articles : $newArticlesTotal - ##Total Relations : $relationTotal - ##Total Duration : $totalDuration");
             
         } catch (\Throwable $e) {
-            $this->log("####{$e->getMessage()}", 1);
-            $this->log($count);
-            if ($count < 5) {
-                $this->RssToDB($count ++);
-            }
+            $this->log("GENERAL exception : {$e->getMessage()}", 1);
         }
     }
 
