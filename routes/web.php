@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+    Route::get('logs', 'LogsController@index');
 });
 
 Route::get('/', 'HomeController@index');

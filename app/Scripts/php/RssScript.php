@@ -1,6 +1,7 @@
 <?php
 namespace App\Scripts\php;
 use App\Article;
+use App\Logs;
 use App\Models\API;
 use App\Politician;
 use Masterminds\HTML5;
@@ -35,8 +36,8 @@ class RssScript{
                 try {
                     $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
                 } catch (\Throwable $e) {
-                    $this->log("####CURL exception on $url : {$e->getMessage()}");
-                    // $feeds = [];
+                    $this->log("CURL exception on $url : {$e->getMessage()}", 1);
+                    $feeds = [];
                 }
                 // Parcours les articles d'un flux rss
                 try {
@@ -52,7 +53,7 @@ class RssScript{
                         }
                     }
                 } catch (\Throwable $e) {
-                    $this->log("####XML exception on $url : {$e->getMessage()}");
+                    $this->log("XML exception on $url : {$e->getMessage()}", 1);
                 }
                 $durationFeed += microtime(true);
                 $this->log("###Articles : $newArticles");//LOG
@@ -68,7 +69,7 @@ class RssScript{
             $this->log("##Total Duration : $totalDuration");//LOG
             
         } catch (\Throwable $e) {
-            $this->log("####$e");
+            $this->log("####{$e->getMessage()}", 1);
             $this->log($count);
             if ($count < 5) {
                 $this->RssToDB($count ++);
@@ -152,7 +153,7 @@ class RssScript{
                 $imageLink = (!empty($image['query']['pages'][0]))? ((!empty($image['query']['pages'][0]['thumbnail']['source']))? $image['query']['pages'][0]['thumbnail']['source']: null) : null;
                 $status =  (!empty($image['query']['pages'][0])) ? (!empty($image['query']['pages'][0]['terms']['description'][0])?($image['query']['pages'][0]['terms']['description'][0]) : null) : null;     
             } catch (\Throwable $th) {
-                $this->log("####ERROR API - WIKIPEDIA :{$th->getMessage()}");
+                $this->log("####ERROR API - WIKIPEDIA :{$th->getMessage()}", 1);
             }
             // INSERT
             try {
@@ -164,7 +165,7 @@ class RssScript{
                 $politician->number_testing++;
                 $politician->save();
             } catch (\Throwable $th) {
-                $this->log("####ERROR SQL INSERT POLITICIAN INFORMATIONS :{$th->getMessage()}");
+                $this->log("####ERROR SQL INSERT POLITICIAN INFORMATIONS :{$th->getMessage()}", 1);
             }
         }
 
@@ -225,14 +226,17 @@ class RssScript{
             }
         }
     }
-    public function log($content){
+    public function log($content, $error = 0){
         if (env('APP_DEBUG')) {
             echo $content . "\n";
+            Logs::insert(['message'=>$content, 'error'=>$error,'created_at'=>date('Y-m-d H:i:s')]);
         }
         else{
             try {
-                Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
+                Logs::insert(['message'=>$content]);
+                // Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
             } catch (\Throwable $e) {
+                echo $e->getMessage();
                 $this->log("###ERROR log insert : {$e->getMessage()}");
             }
         }
