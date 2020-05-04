@@ -22,11 +22,11 @@ class RssScript{
     public function RssToDB($count = 0){
         $this->log('###BEGIN SCRIPT####');
         try {
-            $feeds = Data::feeds();
+            $allFeeds = Data::feeds();
             $totalDuration = -microtime(true);
             $newArticlesTotal = 0;
             $relationTotal = 0;
-            foreach ($feeds as $url) {
+            foreach ($allFeeds as $url) {
                 $durationFeed = -microtime(true);
                 $newArticles = 0;
                 $newRelations = 0;
@@ -36,7 +36,7 @@ class RssScript{
                     $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
                 } catch (\Throwable $e) {
                     $this->log("####CURL exception on $url : {$e->getMessage()}");
-                    $feeds = [];
+                    // $feeds = [];
                 }
                 // Parcours les articles d'un flux rss
                 try {
