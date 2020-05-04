@@ -120,7 +120,7 @@ class RssScript{
             $article->politicians()->attach($pol->id);
             // API wikipedia
             $this->getPoliticianInformations("$pol->firstname $pol->lastname", $pol->id);
-            $this->log("###Relation : $pol->firstname $pol->lastname");
+            // $this->log("###Relation : $pol->firstname $pol->lastname");
             $newRelations++;
         }
         return $newRelations;
@@ -225,7 +225,7 @@ class RssScript{
                 // Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
             } catch (\Throwable $e) {
                 echo $e->getMessage();
-                $this->log("###ERROR log insert : {$e->getMessage()}");
+                // $this->log("###ERROR log insert : {$e->getMessage()}");
             }
         }
     }
