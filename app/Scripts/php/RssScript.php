@@ -233,7 +233,7 @@ class RssScript{
         }
         else{
             try {
-                Logs::insert(['message'=>$content]);
+                Logs::insert(['message'=>$content, 'error'=>$error,'created_at'=>date('Y-m-d H:i:s')]);
                 // Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
             } catch (\Throwable $e) {
                 echo $e->getMessage();
