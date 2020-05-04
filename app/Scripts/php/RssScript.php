@@ -133,7 +133,6 @@ class RssScript{
             $this->getPoliticianInformations("$pol->firstname $pol->lastname", $pol->id);
             $this->log("###Relation : $pol->firstname $pol->lastname");
             $newRelations++;
-            $this->nasTest();
         }
         return $newRelations;
     }
