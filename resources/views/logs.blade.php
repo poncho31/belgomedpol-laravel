@@ -18,7 +18,7 @@
         </table>
     </div>
     
-    <div class="pull-left">
+    <div class="pull-left" style="width:45%;">
         <label for="">Run : </label>
         <table class="table">
             <tr>
