@@ -49,7 +49,7 @@ class Data {
         'http://www.lalibre.be/rss/section/regions/namur.xml',
         'http://www.lalibre.be/rss/infos/belga.xml',
         'http://www.lalibre.be/rss/infos/afp.xml',
-        'http://www.lalibre.be/rss/dossiers.xml',,
+        'http://www.lalibre.be/rss/dossiers.xml',
 
         // LE SOIR
         'http://www.lesoir.be/rss/81851/cible_principale_gratuit',
