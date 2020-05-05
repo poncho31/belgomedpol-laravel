@@ -160,7 +160,7 @@ class Data {
         'https://www.lecho.be/rss/debats.xml',
 
         //LE VIF
-        'https://www.levif.be/actualite/feed.rss',
+        'http://www.levif.be/actualite/feed.rss',
 
         //LA RTBF
         'http://rss.rtbf.be/article/rss/highlight_rtbfinfo_info-accueil.xml',
