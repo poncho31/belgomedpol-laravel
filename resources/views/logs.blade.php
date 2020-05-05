@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="pull-left" style="width:50%;">
+    <div class="pull-left" style="width:45%;">
         <label for="">Erreurs : </label>
         <table class="table">
             <tr>
