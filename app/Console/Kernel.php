@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function(){
             (new RssScript)->RssToDB();
-        })->cron('* * * * *')->withoutOverlapping(); // ->cron('0 */4 * * *'); // run job every 4 hour
+        })->cron('* * * * *')->name('rsstodb')->withoutOverlapping(); // ->cron('0 */4 * * *'); // run job every 4 hour
 
         // $schedule->call(function() use($rssScript){
         //     $rssScript->repairCompleteAll();
