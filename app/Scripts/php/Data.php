@@ -75,7 +75,6 @@ class Data {
         'http://www.lesoir.be/rss/23/cible_principale',
         'http://www.lesoir.be/rss/31920/maga_cible_principale_gratuit',
         //LA DH
-        'http://www.dhnet.be/rss/section/actu.xml',
         'http://www.dhnet.be/rss.xml',
         'http://www.dhnet.be/rss/section/actu.xml',
         'http://www.dhnet.be/rss/section/actu/faits.xml',

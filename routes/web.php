@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +20,13 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::group(['middleware' => ['auth']], function () {
 
         // Registration Routes...
+
+    Route::get('/', 'HomeController@index');
+    Route::get('language', 'HomeController@language')->name('language');
+    Route::resource('politician', 'PoliticianController');
+    Route::resource('article', 'ArticleController');
+    Route::get('administration', 'AdministrationController@index');
+
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');
 
@@ -29,10 +38,3 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('logs', 'LogsController@index');
 });
-
-Route::get('/', 'HomeController@index');
-Route::get('language', 'HomeController@language')->name('language');
-Route::resource('politician', 'PoliticianController');
-Route::resource('article', 'ArticleController');
-Route::get('administration', 'AdministrationController@index');
-;
