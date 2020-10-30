@@ -20,9 +20,9 @@ class AdministrationController extends Controller
      */
     public function index()
     {
-        $handle = fopen(storage_path("logs\\rssScript.log"), "r");
-        $checkHeader = true;
-        $csv = [];
+        // $handle = fopen(storage_path("logs\\rssScript.log"), "r");
+        // $checkHeader = true;
+        // $csv = [];
         
         // while ($csvLine = fgetcsv($handle, 0, ",")) {
         //     if(isset( $csvLine[0])){
@@ -33,7 +33,7 @@ class AdministrationController extends Controller
         //     }
         // }
         // dd($csv);
-        return view('administration', compact('csv'));
+        return view('administration');
     }
 
     public function search(Request $request){
