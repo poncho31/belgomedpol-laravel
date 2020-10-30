@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('politician', 'PoliticianController');
     Route::resource('article', 'ArticleController');
     Route::get('administration', 'AdministrationController@index');
+    Route::post('administration/search', 'AdministrationController@search');
 
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');

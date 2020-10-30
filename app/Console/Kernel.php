@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\test_command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Scripts\php\RssScript;
@@ -15,7 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        test_command::class
     ];
 
     /**
@@ -28,7 +29,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function(){
             (new RssScript)->RssToDB();
-        })->cron('* * * * *')->name('rsstodb')->withoutOverlapping(); //->withoutOverlapping(180); // ->cron('0 */4 * * *'); // run job every 4 hour
+        })->cron('* * * * *')->name('rsstodb')->withoutOverlapping()->appendOutputTo('storage/logs/SCHEDULE_RssToDB.log'); //->withoutOverlapping(180); // ->cron('0 */4 * * *'); // run job every 4 hour
 
         // $schedule->call(function() use($rssScript){
         //     $rssScript->repairCompleteAll();
