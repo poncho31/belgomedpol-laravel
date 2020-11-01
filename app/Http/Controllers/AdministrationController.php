@@ -49,10 +49,10 @@ class AdministrationController extends Controller
                 $link = "AND";
                 $bool = false;
             }
-            $where .= " $link article like '%$parameter%'";
+            $where .= " AND article like '%$parameter%'";
         }
-        $globalSearch = DB::select(DB::raw(
-            "SELECT * FROM articles WHERE 1=1 $where ORDER BY id DESC, date DESC LIMIT 100"));
+        $globalSearch = DB::select(DB::raw("SELECT * FROM articles WHERE 1=1 $where ORDER BY id DESC, date DESC LIMIT 100"));
+        $countMedia = DB::select(DB::raw("SELECT *, count(*) cnt FROM articles WHERE 1=1 $where GROUP BY media ORDER BY id DESC, date DESC"));
         // $globalSearch->orWhere('article', 'like', "%test%");
         // foreach($parameters as $parameter){
         // }
@@ -62,6 +62,6 @@ class AdministrationController extends Controller
         // $globalSearch->get();
         // dd(json_encode(count($globalSearch)));
         // dump((array) $globalSearch);
-        return response((array) $globalSearch);
+        return response((array)['globalSearch'=>$globalSearch, 'countMedia'=>$countMedia]);
     }
 }

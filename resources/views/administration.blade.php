@@ -64,34 +64,36 @@
                 success: function(e){
                     console.log("success");
                     var html = "";
-                    for(search in e){
-                        console.log(e[search]);
+                    console.log(e);
+                    var globalSearch = e['globalSearch'];
+                    for(search in globalSearch){
                         for(searchWord in searchWords){
+                            console.log(globalSearch[search]);
                             var item = searchWords[searchWord];
-                            if(e[search].titre !== null){
-                                e[search].titre= e[search].titre.replaceAll(item, "<span class='underline'>"+item+"</span>");
+                            if(globalSearch[search].titre !== null){
+                                globalSearch[search].titre= globalSearch[search].titre.replaceAll(item, "<span class='underline'>"+item+"</span>");
                             }
-                            if(e[search].article !== null){
-                                e[search].article = e[search].article.replaceAll(item, "<span class='underline'>"+item+"</span>");
+                            if(globalSearch[search].article !== null){
+                                globalSearch[search].article = globalSearch[search].article.replaceAll(item, "<span class='underline'>"+item+"</span>");
                             }
                             else{
-                                // if(e[search].description !== null){
-                                //     e[search].article.replaceAll(e[search].description, "<span class='underline'>"+e[search].description+"</span>");
+                                // if(globalSearch[search].description !== null){
+                                //     globalSearch[search].article.replaceAll(globalSearch[search].description, "<span class='underline'>"+globalSearch[search].description+"</span>");
                                 // }
                             }
                         }
                         html += "<tr>"
-                        html +=     "<td>"+e[search].media+"</td>";
+                        html +=     "<td>"+globalSearch[search].media+"</td>";
                         html +=     "<td>"+
-                                        "<a href='"+e[search].lien+"'>"+
-                                            e[search].titre +
+                                        "<a href='"+globalSearch[search].lien+"'>"+
+                                            globalSearch[search].titre +
                                         "</a>"+
                                         "<span style='cursor:pointer' class='glyphicon glyphicon-triangle-bottom displayArticle'></span>"+
                                         "<div class='toggle article'>"+
-                                            e[search].article +
+                                            globalSearch[search].article +
                                         "</div>" + 
                                     "</td>";
-                        html +=     "<td>"+e[search].date+"</td>";
+                        html +=     "<td>"+globalSearch[search].date+"</td>";
                         html += "</tr>";
                     }
                     // console.log();
