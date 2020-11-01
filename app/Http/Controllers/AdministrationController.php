@@ -52,7 +52,7 @@ class AdministrationController extends Controller
             $where .= " AND article like '%$parameter%'";
         }
         $globalSearch = DB::select(DB::raw("SELECT * FROM articles WHERE 1=1 $where ORDER BY id DESC, date DESC LIMIT 100"));
-        $countMedia = DB::select(DB::raw("SELECT *, count(*) cnt FROM articles WHERE 1=1 $where GROUP BY media ORDER BY id DESC, date DESC"));
+        $countMedia = DB::select(DB::raw("SELECT *, count(*) cnt, year(date) as year, month(date) as month FROM articles WHERE 1=1 $where GROUP BY media, year(date), month(date) ORDER BY  media DESC, year(date) DESC , month(date)"));
         // $globalSearch->orWhere('article', 'like', "%test%");
         // foreach($parameters as $parameter){
         // }

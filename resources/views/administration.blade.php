@@ -38,6 +38,8 @@
             
         </tbody>
     </table>
+    COMPTE
+    <table id="count"></table>
 </div>
 @endsection
 
@@ -65,16 +67,22 @@
                     console.log("success");
                     var html = "";
                     console.log(e);
+                    var countMedia = e['countMedia'];
                     var globalSearch = e['globalSearch'];
+                    // GLOBAL SEARCH
+                    var listColorSearch = ["#0275d8", "#5cb85c", "#5bc0de", "#f0ad4e", "#d9534f", "#292b2c"];
                     for(search in globalSearch){
                         for(searchWord in searchWords){
                             console.log(globalSearch[search]);
+
                             var item = searchWords[searchWord];
+                            var pattern = new RegExp(item,"ig");
+
                             if(globalSearch[search].titre !== null){
-                                globalSearch[search].titre= globalSearch[search].titre.replaceAll(item, "<span class='underline'>"+item+"</span>");
+                                globalSearch[search].titre= globalSearch[search].titre.replaceAll(pattern, "<span style='background-color:"+listColorSearch[searchWord]+";color:white'>"+item+"</span>");
                             }
                             if(globalSearch[search].article !== null){
-                                globalSearch[search].article = globalSearch[search].article.replaceAll(item, "<span class='underline'>"+item+"</span>");
+                                globalSearch[search].article = globalSearch[search].article.replaceAll(pattern, "<span style='background-color:"+listColorSearch[searchWord]+";color:white'>"+item+"</span>");
                             }
                             else{
                                 // if(globalSearch[search].description !== null){
@@ -98,6 +106,20 @@
                     }
                     // console.log();
                     $("#search").html(html);
+
+
+                    // COUNT MEDIA
+                    html ="<tr><th>Media</th><th>Année</th><th>Mois</th><th>Nombre</th></tr>";
+                    for( media in countMedia){
+                        var item = countMedia[media];
+                        html+="<tr>";
+                        html+="<td>"+item.media+"</td>";
+                        html+="<td>"+item.year+"</td>";
+                        html+="<td>"+item.month+"</td>";
+                        html+="<td>"+item.cnt+"</td>";
+                        html+="<tr/>";
+                    }
+                    $("#count").html(html);
                 },
                 error: function(e){
                     console.log("error",e);
