@@ -37,13 +37,31 @@ class AdministrationController extends Controller
     }
 
     public function search(Request $request){
-        $parameter = $request->input('GlobalSearch');
-        $globalSearch = Article::where('article', 'like', "%$parameter%")
-                                ->orderBy('id', 'DESC')
-                                ->orderby('date', 'DESC')
-                                ->limit(100)
-                                ->get();
+        $parameters = explode(';',$request->input('GlobalSearch'));
+        $where="";
+        $bool = true;
+        foreach($parameters as $parameter){
+            $link = "";
+            if($bool){
+                $link = "AND";
+            }
+            else{
+                $link = "AND";
+                $bool = false;
+            }
+            $where .= " $link article like '%$parameter%'";
+        }
+        $globalSearch = DB::select(DB::raw(
+            "SELECT * FROM articles WHERE 1=1 $where ORDER BY id DESC, date DESC LIMIT 100"));
+        // $globalSearch->orWhere('article', 'like', "%test%");
+        // foreach($parameters as $parameter){
+        // }
+        // $globalSearch->orderBy('id', 'DESC')
+        //              ->orderby('date', 'DESC')
+        //              ->limit(100);
+        // $globalSearch->get();
         // dd(json_encode(count($globalSearch)));
-        return $globalSearch;
+        // dump((array) $globalSearch);
+        return response((array) $globalSearch);
     }
 }

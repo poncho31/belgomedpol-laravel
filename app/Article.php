@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     public $timestamps = null;
-    protected $fillable = ['media', 'titre', 'description', 'date', 'lien', 'categorie'];
+    protected $fillable = ['media', 'titre', 'description','article', 'date', 'lien', 'categorie'];
 
     public function politicians()
     {
