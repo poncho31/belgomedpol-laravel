@@ -94,7 +94,8 @@ class RssScript{
         ]);
         $dom->loadFromUrl($url);
         $data = "";
-        foreach (Data::mediasTag()[$media] as $tag) {
+        $mediaTag = isset(Data::mediasTag()[$media])?Data::mediasTag()[$media]:[];
+        foreach ($mediaTag as $tag) {
             if($data == ""){
                 $content = $dom->find($tag);
                 foreach($content as $e){
