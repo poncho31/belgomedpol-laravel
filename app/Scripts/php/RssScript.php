@@ -33,7 +33,7 @@ class RssScript{
                 // Va chercher les feeds
                 try {
                     $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
-                    $this->log("URL $url");
+                    // $this->log("URL $url");
                 } catch (\Throwable $e) {
                     $this->log("CURL exception on $url : {$e->getMessage()}", 1);
                     $feeds = [];
@@ -41,7 +41,7 @@ class RssScript{
                 // Parcours les articles d'un flux rss
                 try {
                     foreach ($feeds as $feed) {
-                        $this->log("FEED {$feed->getLink()}");
+                        // $this->log("FEED {$feed->getLink()}");
                         // CHECK si article déjà en BDD
                         $isInDB = Article::where('lien','=', $feed->getLink())->first();
                         if (!$isInDB) {
