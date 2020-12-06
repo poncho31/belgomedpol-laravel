@@ -32,8 +32,8 @@ class RssScript{
                 $newRelations = 0;
                 // Va chercher les feeds
                 try {
-                    $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
                     dump("URL $url");
+                    $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
                     // $this->log("URL $url");
                 } catch (\Throwable $e) {
                     $this->log("CURL exception on $url : {$e->getMessage()}", 1);
@@ -71,7 +71,6 @@ class RssScript{
 
     public function getArticle($feed, $update = ["update"=>false, "id"=>""]){
         $article = ($update['update'])? Article::find($update['id']) : new Article;
-
         if (!$update['update']) {
             $mediaName = explode('.',isset(parse_url( $feed->getLink())['host'])?parse_url($feed->getLink())['host']:$feed->getLink())[1];
             $article->media = ($mediaName == "google")?"rtl":$mediaName;
@@ -88,21 +87,25 @@ class RssScript{
         return $article;
     }
     public function getCompleteArticle($url, $media){
-        $dom = new Dom;
-        $dom->setOptions([
-            'removeDoubleSpace'=>true
-        ]);
-        $dom->loadFromUrl($url);
         $data = "";
-        $mediaTag = isset(Data::mediasTag()[$media])?Data::mediasTag()[$media]:[];
-        foreach ($mediaTag as $tag) {
-            if($data == ""){
-                $content = $dom->find($tag);
-                foreach($content as $e){
-                    foreach ($e->find('a') as $a){
-                        $a->delete();
+        if(@get_headers($url) != false) // check if url exist
+        {
+            $dom = new Dom;
+            $dom->setOptions([
+                'removeDoubleSpace'=>true
+            ]);
+            $dom->loadFromUrl($url);
+            
+            $mediaTag = isset(Data::mediasTag()[$media])?Data::mediasTag()[$media]:[];
+            foreach ($mediaTag as $tag) {
+                if($data == ""){
+                    $content = $dom->find($tag);
+                    foreach($content as $e){
+                        foreach ($e->find('a') as $a){
+                            $a->delete();
+                        }
+                        $data .= $e->innerHtml;
                     }
-                    $data .= $e->innerHtml;
                 }
             }
         }
