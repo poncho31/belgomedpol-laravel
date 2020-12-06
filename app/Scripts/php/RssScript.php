@@ -42,6 +42,7 @@ class RssScript{
                 // Parcours les articles d'un flux rss
                 try {
                     foreach ($feeds as $feed) {
+                        // dump($feed);
                         // $this->log("FEED {$feed->getLink()}");
                         // CHECK si article déjà en BDD
                         $isInDB = Article::where('lien','=', $feed->getLink())->first();
