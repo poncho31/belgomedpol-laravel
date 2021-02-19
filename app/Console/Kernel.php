@@ -6,6 +6,7 @@ use App\Console\Commands\test_command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Scripts\php\RssScript;
+use App\Console\Commands\rss_command;
 use App\Theme;
 
 class Kernel extends ConsoleKernel
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        test_command::class
+        test_command::class,
+        rss_command::class
     ];
 
     /**
