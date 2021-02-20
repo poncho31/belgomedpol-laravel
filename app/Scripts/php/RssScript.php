@@ -224,11 +224,12 @@ class RssScript{
     }
     public function log($content, $error = 0){
         if (env('APP_DEBUG')) {
-            echo $content . "\n";
+            dump($content);
             Logs::insert(['message'=>$content, 'error'=>$error,'created_at'=>date('Y-m-d H:i:s')]);
         }
         else{
             try {
+                dump($content);
                 Logs::insert(['message'=>$content, 'error'=>$error,'created_at'=>date('Y-m-d H:i:s')]);
                 // Storage::disk('local')->append("rssScript.log", date("d-m-Y H:i:s").",$content\n");
             } catch (\Throwable $e) {

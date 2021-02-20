@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use App\Scripts\php\RssScript;
 use Illuminate\Console\Command;
+use phpseclib\Net\SSH1;
+use phpseclib\Net\SSH2;
+use Spatie\Ssh\Ssh;
 
 class rss_command extends Command
 {
@@ -39,8 +42,17 @@ class rss_command extends Command
     public function handle()
     {
         // ssh -p 65002 u655423024@45.87.81.51
-        dump("Begin : ".date('Y-m-d H:i:s'));
-        return (new RssScript())->RssToDB();
-        dump("End : ".date('Y-m-d H:i:s'));
+        if($this->argument('action') == 'ssh'){
+//            $process = Ssh::create('user', 'example.com')->execute('your favorite command');
+            $ssh = new SSH2('45.87.81.51', '65002');
+
+            $ssh->login(env('SSH_USER'), env('SSH_PASS'));
+            dump($ssh->exec('cd public_html/politicus && php artisan rss'));
+        }
+        else{
+            dump("Begin : ".date('Y-m-d H:i:s'));
+            echo (new RssScript())->RssToDB();
+            dump("End : ".date('Y-m-d H:i:s'));
+        }
     }
 }

@@ -15,7 +15,9 @@
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.0",
         "paquettg/php-html-parser": "^2.0",
-        "phpseclib/phpseclib": "^2.0"
+        "phpseclib/phpseclib": "^2.0",
+        "spatie/ssh": "^1.5",
+      "ext-ssh2": "*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
