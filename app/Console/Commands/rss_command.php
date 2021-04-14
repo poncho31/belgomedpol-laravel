@@ -42,6 +42,7 @@ class rss_command extends Command
     public function handle()
     {
         // ssh -p 65002 u655423024@45.87.81.51
+        // cd public_html/politicus
         if($this->argument('action') == 'ssh'){
 //            $process = Ssh::create('user', 'example.com')->execute('your favorite command');
             $ssh = new SSH2('45.87.81.51', '65002');
