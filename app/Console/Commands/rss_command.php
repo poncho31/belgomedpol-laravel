@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\RssModel;
 use App\Scripts\php\RssScript;
 use Illuminate\Console\Command;
 use phpseclib\Net\SSH1;
@@ -41,6 +42,7 @@ class rss_command extends Command
      */
     public function handle()
     {
+        dump("Begin : ".date('Y-m-d H:i:s'));
         // ssh -p 65002 u655423024@45.87.81.51
         // cd public_html/politicus
         if($this->argument('action') == 'ssh'){
@@ -53,10 +55,17 @@ class rss_command extends Command
                 dump($var);
             }
         }
-        else{
-            dump("Begin : ".date('Y-m-d H:i:s'));
-            echo (new RssScript())->RssToDB($this->argument('action'));
-            dump("End : ".date('Y-m-d H:i:s'));
+        elseif($this->argument('action') == 'check'){
+            if($this->argument('param1') == 'politicianInfo'){
+                echo (new RssScript())->getPoliticianInformations();
+            }
         }
+        else{
+            $model = new RssModel();
+            $model->mediaName = $this->argument('action');
+            echo (new RssScript())->run($model);
+
+        }
+        dump("End : ".date('Y-m-d H:i:s'));
     }
 }

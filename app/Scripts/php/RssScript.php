@@ -4,6 +4,7 @@ use App\Article;
 use App\Logs;
 use App\MediaInfo;
 use App\Models\API;
+use App\Models\RssModel;
 use App\Politician;
 use Masterminds\HTML5;
 use PHPHtmlParser\Dom;
@@ -17,10 +18,19 @@ class RssScript{
 
     public function __construct()
     {
+
     }
+
+    public function run(RssModel $model){
+        // Insert rss to db + link politician to article
+        $this->RssToDB($model->mediaName);
+
+        // Check if new media
+        MediaInfo::InsertMedia();
+    }
+
     public function RssToDB($mediaToRun = null){
         try {
-            MediaInfo::InsertMedia(); // check if new media
             $totalDuration = -microtime(true);
             $newArticlesTotal = 0;
             $relationTotal = 0;
@@ -45,8 +55,6 @@ class RssScript{
                     // Parcours les articles d'un flux rss
                     try {
                         foreach ($feeds as $feed) {
-                            // dump($feed);
-                            // $this->log("FEED {$feed->getLink()}");
                             // CHECK si article déjà en BDD
                             $isInDB = Article::where('lien','=', $feed->getLink())->first();
                             if (!$isInDB) {
@@ -131,39 +139,41 @@ class RssScript{
             // Attach politician to article
             $article->politicians()->attach($pol->id);
             // API wikipedia
-            $this->getPoliticianInformations("$pol->firstname $pol->lastname", $pol->id);
+//            $this->getPoliticianInformations("$pol->firstname $pol->lastname", $pol->id);
             // $this->log("###Relation : $pol->firstname $pol->lastname");
             $newRelations++;
         }
         return $newRelations;
     }
 
-    public function getPoliticianInformations($politician, $id){
+    public function getPoliticianInformations(){
         $description="";$descriptionLink="";$imageLink="";$status="";
         // Check if already test more than 5 times
-        if(Politician::where('id',$id)->where('number_testing','<', 5)->first()){
+        foreach(Politician::where('number_testing','<', 5)->get() as $pol){
             try {
+                $politician = "{$pol->firstname} {$pol->lastname}";
+                dump($politician);
                 // get information
                 $content = API::wikipedia($politician, "content");
                 $description = (isset($content[2][0]) && $content[2][0] != '')? $content[2][0] : null;
                 $descriptionLink = (isset($content[3][0]) && $content[3][0] != '' ) ? $content[3][0] : null;
-                
                 // Get image url
                 $image = API::wikipedia($politician, "image");
                 $imageLink = (!empty($image['query']['pages'][0]))? ((!empty($image['query']['pages'][0]['thumbnail']['source']))? $image['query']['pages'][0]['thumbnail']['source']: null) : null;
-                $status =  (!empty($image['query']['pages'][0])) ? (!empty($image['query']['pages'][0]['terms']['description'][0])?($image['query']['pages'][0]['terms']['description'][0]) : null) : null;     
+                $status =  (!empty($image['query']['pages'][0])) ? (!empty($image['query']['pages'][0]['terms']['description'][0])?($image['query']['pages'][0]['terms']['description'][0]) : null) : null;
             } catch (\Throwable $th) {
                 $this->log("####ERROR API - WIKIPEDIA :{$th->getMessage()}", 1);
             }
             // INSERT
             try {
-                $politician= Politician::find($id);
+                $politician= Politician::find($pol->id);
                 $politician->description = $description;
                 $politician->lienDescription = $descriptionLink;
                 $politician->image = $imageLink;
                 $politician->statut = $status;
                 $politician->number_testing++;
                 $politician->save();
+                dd($politician);
             } catch (\Throwable $th) {
                 $this->log("####ERROR SQL INSERT POLITICIAN INFORMATIONS :{$th->getMessage()}", 1);
             }
