@@ -15,7 +15,7 @@ class rss_command extends Command
      *
      * @var string
      */
-    protected $signature = 'rss {action?}';
+    protected $signature = 'rss {action?} {param1?}';
 
     /**
      * The console command description.
@@ -48,11 +48,14 @@ class rss_command extends Command
             $ssh = new SSH2('45.87.81.51', '65002');
 
             $ssh->login(env('SSH_USER'), env('SSH_PASS'));
-            dump($ssh->exec('cd public_html/politicus && php artisan rss'));
+
+            while($var = $ssh->exec('cd public_html/politicus && php artisan rss')){
+                dump($var);
+            }
         }
         else{
             dump("Begin : ".date('Y-m-d H:i:s'));
-            echo (new RssScript())->RssToDB();
+            echo (new RssScript())->RssToDB($this->argument('action'));
             dump("End : ".date('Y-m-d H:i:s'));
         }
     }

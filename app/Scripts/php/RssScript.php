@@ -2,15 +2,13 @@
 namespace App\Scripts\php;
 use App\Article;
 use App\Logs;
+use App\MediaInfo;
 use App\Models\API;
 use App\Politician;
 use Masterminds\HTML5;
 use PHPHtmlParser\Dom;
-use App\Scripts\php\Data;
 use FeedIo\Factory as FeedIo;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 // Script permettant de mettre à jour la BDD media (articles issus des flux RSS)
 class RssScript{
@@ -20,46 +18,52 @@ class RssScript{
     public function __construct()
     {
     }
-    public function RssToDB(){
+    public function RssToDB($mediaToRun = null){
         try {
+            MediaInfo::InsertMedia(); // check if new media
             $totalDuration = -microtime(true);
             $newArticlesTotal = 0;
             $relationTotal = 0;
             // Parcours le tableau des flux RSS
-            foreach (Data::feeds() as $url) {
-                $durationFeed = -microtime(true);
-                $newArticles = 0;
-                $newRelations = 0;
-                // Va chercher les feeds
-                try {
-                    dump("URL $url");
-                    $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
-                    // $this->log("URL $url");
-                } catch (\Throwable $e) {
-                    $this->log("CURL exception on $url : {$e->getMessage()}", 1);
-                    $feeds = [];
-                }
-                // Parcours les articles d'un flux rss
-                try {
-                    foreach ($feeds as $feed) {
-                        // dump($feed);
-                        // $this->log("FEED {$feed->getLink()}");
-                        // CHECK si article déjà en BDD
-                        $isInDB = Article::where('lien','=', $feed->getLink())->first();
-                        if (!$isInDB) {
-                            // INSERT article en BDD
-                            $article = $this->getArticle($feed);
-                            // CHECK et INSERT politiciens liés aux articles
-                            $newRelations += $this->getRelationArticlePoliticians($article);
-                            $newArticles++;
-                        }
+            $dataFeeds = Data::feeds();
+            $data = $mediaToRun==null?$dataFeeds: [$mediaToRun =>$dataFeeds[$mediaToRun]];
+            foreach($data as $media => $urls){
+                dump($media);
+                foreach ($urls as $url) {
+                    $durationFeed = -microtime(true);
+                    $newArticles = 0;
+                    $newRelations = 0;
+                    // Va chercher les feeds
+                    try {
+                        dump("URL $url");
+                        $feeds = FeedIo::create()->getFeedIo()->read($url)->getFeed();
+                        // $this->log("URL $url");
+                    } catch (\Throwable $e) {
+                        $this->log("CURL exception on $url : {$e->getMessage()}", 1);
+                        $feeds = [];
                     }
-                } catch (\Throwable $e) {
-                    $this->log("XML exception on $url : {$e->getMessage()}", 1);
+                    // Parcours les articles d'un flux rss
+                    try {
+                        foreach ($feeds as $feed) {
+                            // dump($feed);
+                            // $this->log("FEED {$feed->getLink()}");
+                            // CHECK si article déjà en BDD
+                            $isInDB = Article::where('lien','=', $feed->getLink())->first();
+                            if (!$isInDB) {
+                                // INSERT article en BDD
+                                $article = $this->getArticle($feed);
+                                // CHECK et INSERT politiciens liés aux articles
+                                $newRelations += $this->getRelationArticlePoliticians($article);
+                                $newArticles++;
+                            }
+                        }
+                    } catch (\Throwable $e) {
+                        $this->log("XML exception on $url : {$e->getMessage()}", 1);
+                    }
+                    $durationFeed += microtime(true);
+                    $relationTotal+=$newRelations;
+                    $newArticlesTotal+=$newArticles;
                 }
-                $durationFeed += microtime(true);
-                $relationTotal+=$newRelations;
-                $newArticlesTotal+=$newArticles;
             }
 
             $totalDuration += microtime(true);
