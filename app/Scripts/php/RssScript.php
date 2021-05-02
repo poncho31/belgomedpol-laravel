@@ -5,6 +5,7 @@ use App\Logs;
 use App\MediaInfo;
 use App\Models\API;
 use App\Models\RssModel;
+use App\Models\Tools;
 use App\Politician;
 use Masterminds\HTML5;
 use PHPHtmlParser\Dom;
@@ -38,7 +39,7 @@ class RssScript{
             $dataFeeds = Data::feeds();
             $data = $mediaToRun==null?$dataFeeds: [$mediaToRun =>$dataFeeds[$mediaToRun]];
             foreach($data as $media => $urls){
-                dump($media);
+                MediaInfo::where('name', $media)->update(['last_update'=> Tools::GetCurrentEuropeDateTime()]);
                 foreach ($urls as $url) {
                     $durationFeed = -microtime(true);
                     $newArticles = 0;

@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\DB;
 */
 class MediaInfo extends Model
 {
-    public $timestamps = true;
-    protected $fillable = ['nom','last_update'];
+    public $table = "media_info";
+    public $timestamps = false;
+    protected $fillable = ['name','last_update'];
 
     public function article(){
-        return $this->hasMany(Article::class, 'nom', 'media');
+        return $this->hasMany(Article::class, 'name', 'media');
     }
 
     public static function InsertMedia(){
