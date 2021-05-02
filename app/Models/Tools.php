@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use phpseclib\Net\SFTP;
 use App\Lexique;
 
@@ -26,5 +27,9 @@ class Tools
         }
         $sftp->put('../httpd.private/FTP/'. basename($srcPath), $srcPath, SFTP::SOURCE_LOCAL_FILE);
         return "success";
+    }
+
+    public static function GetCurrentEuropeDateTime(){
+        return (new Carbon('now', 'Europe/Brussels'))->format('Y-m-d H:i:s');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\RssModel;
+use App\Models\Tools;
 use App\Scripts\php\RssScript;
 use Illuminate\Console\Command;
 use phpseclib\Net\SSH1;
@@ -42,7 +43,7 @@ class rss_command extends Command
      */
     public function handle()
     {
-        dump("Begin : ".date('Y-m-d H:i:s'));
+        dump("Begin : ".Tools::GetCurrentEuropeDateTime());
         // ssh -p 65002 u655423024@45.87.81.51
         // cd public_html/politicus
         if($this->argument('action') == 'ssh'){
@@ -66,6 +67,6 @@ class rss_command extends Command
             echo (new RssScript())->run($model);
 
         }
-        dump("End : ".date('Y-m-d H:i:s'));
+        dump("End : ".Tools::GetCurrentEuropeDateTime());
     }
 }
