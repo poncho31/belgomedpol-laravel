@@ -174,7 +174,6 @@ class RssScript{
                 $politician->statut = $status;
                 $politician->number_testing++;
                 $politician->save();
-                dd($politician);
             } catch (\Throwable $th) {
                 $this->log("####ERROR SQL INSERT POLITICIAN INFORMATIONS :{$th->getMessage()}", 1);
             }
