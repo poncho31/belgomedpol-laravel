@@ -150,7 +150,7 @@ class RssScript{
     public function getPoliticianInformations(){
         $description="";$descriptionLink="";$imageLink="";$status="";
         // Check if already test more than 5 times
-        foreach(Politician::where('number_testing','<', 5)->get() as $pol){
+        foreach(Politician::where('number_testing','<', 5)->whereNull('lienDescription')->get() as $pol){
             try {
                 $politician = "{$pol->firstname} {$pol->lastname}";
                 dump($politician);
