@@ -44,7 +44,6 @@ class rss_command extends Command
     public function handle()
     {
         dump("Begin : ".Tools::GetCurrentEuropeDateTime());
-        // ssh -p 65002 u655423024@45.87.81.51
         // cd public_html/politicus
         if($this->argument('action') == 'ssh'){
 //            $process = Ssh::create('user', 'example.com')->execute('your favorite command');
